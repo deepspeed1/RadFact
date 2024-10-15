@@ -303,12 +303,14 @@ class RadFactMetric:
         # Convert study IDs to strings because the NLI processor expects it
         candidates_str_ids = {str(study_id): sequence for study_id, sequence in candidates_mm.items()}
         references_str_ids = {str(study_id): sequence for study_id, sequence in references_mm.items()}
-
+        print(f"{candidates_str_ids = }")
+        print(f"{references_str_ids = }")
         llm_ev_engine = get_report_nli_engine(self.llm_nli_cfg, candidates_str_ids, references_str_ids)
         processed_samples: list[NLISample] = llm_ev_engine.run()
         if llm_ev_engine.aggregated_processor_stats:
             self.meta_metrics.update(llm_ev_engine.aggregated_processor_stats)
         processed_samples_by_study_id = {sample.example_id: sample for sample in processed_samples}
+        print(f"{processed_samples_by_study_id = }")
         # Attach the evidence and compute the scores
         results_per_sample: list[PerSampleNLIResult] = []
         for study_id_str in candidates_str_ids.keys():
@@ -333,6 +335,8 @@ class RadFactMetric:
                 premise_grounded_phrases=candidate_grounded_phrases,
             )
             # Now we can compute the score
+            print(f"{candidate_phrases_evidenced = }")
+            print(f"{reference_phrases_evidenced = }")
             score = self.compute_radfact_score(candidate_phrases_evidenced, reference_phrases_evidenced)
             results_per_sample.append(
                 PerSampleNLIResult(
@@ -345,6 +349,7 @@ class RadFactMetric:
         assert len(results_per_sample) == len(
             candidates_str_ids
         ), f"Mismatch between input and output samples {len(results_per_sample)=} vs {len(candidates_str_ids)=}"
+        print(f"{candidates_str_ids = }")
         return results_per_sample
 
     def results_per_sample_to_dataframe(self, results_per_sample: PerSampleResultType) -> pd.DataFrame:
