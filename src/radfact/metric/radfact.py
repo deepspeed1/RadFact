@@ -299,7 +299,8 @@ class RadFactMetric:
             candidates_mm, references_mm = self.convert_candidates_and_references_to_phrases(
                 candidates_mm, references_mm
             )
-
+        print(f"{candidates_mm = }")
+        print(f"{references_mm = }")
         # Convert study IDs to strings because the NLI processor expects it
         candidates_str_ids = {str(study_id): sequence for study_id, sequence in candidates_mm.items()}
         references_str_ids = {str(study_id): sequence for study_id, sequence in references_mm.items()}
