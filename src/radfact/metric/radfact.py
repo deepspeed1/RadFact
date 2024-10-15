@@ -250,24 +250,29 @@ class RadFactMetric:
         single phrases describing one finding each. This is necessary for the entailment verification step.
         """
         report_to_phrases_prefix = "report_to_phrases"
-
+        print(f"function: convert_candidates_and_references_to_phrases\nInput: {candidates_mm = }")
         logger.info("CONVERTING GENERATIONS TO PHRASES...")
         candidates_mm = self.convert_narrative_text_to_phrases(
             candidates_mm, metric_prefix=f"{report_to_phrases_prefix}/generations"
         )
+        print(f"function: convert_candidates_and_references_to_phrases\n{candidates_mm = }")
         # Ideally we already have GroundedPhrase for the references, but if not we also process
         logger.info("CONVERTING GROUND TRUTH TO PHRASES...")
         references_mm = self.convert_narrative_text_to_phrases(
             references_mm, metric_prefix=f"{report_to_phrases_prefix}/ground_truth"
         )
+        print(f"function: convert_candidates_and_references_to_phrases\n{references_mm = }")
         candidates_filtered, references_filtered = self.filter_candidates_and_references_to_common_keys(
             candidates_mm, references_mm
         )
+        print(f"function: convert_candidates_and_references_to_phrases\n{candidates_filtered = }")
+        print(f"function: convert_candidates_and_references_to_phrases\n{references_filtered = }")
         num_dropped_candidates = len(candidates_mm) - len(candidates_filtered)
         num_dropped_references = len(references_mm) - len(references_filtered)
         self.meta_metrics[f"{report_to_phrases_prefix}/num_dropped_candidates"] = num_dropped_candidates
         self.meta_metrics[f"{report_to_phrases_prefix}/num_dropped_references"] = num_dropped_references
-
+        print(f"function: convert_candidates_and_references_to_phrases\n{num_dropped_candidates = }")
+        print(f"function: convert_candidates_and_references_to_phrases\n{num_dropped_references = }")
         return candidates_filtered, references_filtered  # type: ignore [return-value]
 
     def convert_input_to_multimodal(
