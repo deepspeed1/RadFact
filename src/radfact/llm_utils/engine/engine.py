@@ -275,8 +275,11 @@ class LLMEngine:
             batch_outputs: OutputsType = []
             for _, row in tqdm(batch.iterrows(), total=len(batch), desc=worker_id):
                 query = self.row_to_query(row)
+                print(f'run_worker: {query = }')
                 query_id = row[dataset_subset.index_col]
+                print(f'run_worker: {query_id = }')
                 output = self.processor.run(query=query, query_id=query_id)
+                print(f'run_worker: {output = }')
                 if output is not None:
                     raw_outputs.append(output)
                     if isinstance(output, BaseModelWithId):
@@ -290,6 +293,7 @@ class LLMEngine:
                     batch_outputs.append(output_dict)
                     self.on_processing_step(processed_id=query_id, dataset_subset=dataset_subset)
                 else:
+                    print('run_worker step skipped')
                     self.on_skip_step(skipped_id=query_id, dataset_subset=dataset_subset)
             self.on_batch_end(i, j, dataset_subset, batch_outputs)
         print(f'LLMEngine run_worker: {query = }')
