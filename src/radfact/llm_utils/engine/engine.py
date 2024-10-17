@@ -343,9 +343,10 @@ class LLMEngine:
         logger.info(f"Processing {len(self.dataset_df)} rows with {len(self.endpoints)} endpoints")
         logger.info(f"Progress output folder: {self.run_output_folder}")
         logger.info(f"Final output folder: {self.final_output_folder}")
-
+        
         dataset_subsets = self.shard_dataset()
-
+        print(f'LLMEngine run: {dataset_subsets = }')
+        
         processes: list[multiprocessing.Process] = []
         for endpoint_url, dataset_subset in dataset_subsets.items():
             if len(dataset_subset) == 0:
@@ -356,6 +357,6 @@ class LLMEngine:
                 process.start()
         for process in processes:
             process.join()
-
+        print(f'LLMEngine run: {self.return_aggregated_outputs() = }')
         self.post_run_aggregation()
         return self.return_aggregated_outputs()
