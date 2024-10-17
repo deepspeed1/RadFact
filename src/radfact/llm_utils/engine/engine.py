@@ -293,7 +293,7 @@ class LLMEngine:
                     self.on_skip_step(skipped_id=query_id, dataset_subset=dataset_subset)
             self.on_batch_end(i, j, dataset_subset, batch_outputs)
         print(f'LLMEngine run_worker: {query = }')
-        print(f'LLMEngine run_worker: {batch_outputs[0] = }')
+        print(f'LLMEngine run_worker: {batch_outputs = }')
         self.on_worker_end(dataset_subset)
         self.return_dataset_subsets[worker_id] = dataset_subset
         self.return_raw_outputs[worker_id] = raw_outputs
