@@ -221,8 +221,10 @@ class LLMEngine:
         logger.info(
             f"Started process {os.getpid()} for endpoint {endpoint.url} with speed factor {endpoint.speed_factor}"
         )
+        print(f'LLM Engine on_worker_start: {endpoint = }')
         self.llm_api_args.set_endpoint(endpoint)
         self.processor.set_model(model=self.llm_api_args.get_model())
+        print(f'LLM Engine on_worker_start: {self.processor = }')
 
     def on_worker_end(self, dataset_subset: DataSubset) -> None:
         """Save progress and skipped IDs to file at the end of processing."""
@@ -290,6 +292,8 @@ class LLMEngine:
                 else:
                     self.on_skip_step(skipped_id=query_id, dataset_subset=dataset_subset)
             self.on_batch_end(i, j, dataset_subset, batch_outputs)
+        print(f'LLMEngine run_worker: {query = }')
+        print(f'LLMEngine run_worker: {batch_outputs[0] = }')
         self.on_worker_end(dataset_subset)
         self.return_dataset_subsets[worker_id] = dataset_subset
         self.return_raw_outputs[worker_id] = raw_outputs
