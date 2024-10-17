@@ -8,6 +8,7 @@ from enum import Enum
 from functools import partial
 from pathlib import Path
 from typing import Any, Callable, Generic, Iterable, Protocol, TypeVar
+import traceback
 
 import yaml
 from langchain.chains import LLMChain
@@ -212,6 +213,7 @@ class StructuredProcessor(BaseProcessor[QueryT, ResultT]):
     def run(self, query: QueryT, query_id: str) -> ResultT | None:
         assert self.chain, "Model not set. Call `set_model` first."
         try:
+            print(f'')
             response: ResultT = self.chain.invoke({_QUERY_KEY: query})[self.chain.output_key]
             if self.validate_result_fn:
                 self.validate_result_fn(query, response)
@@ -219,6 +221,8 @@ class StructuredProcessor(BaseProcessor[QueryT, ResultT]):
             print(f'Structured Processor run: {response = }')
             return response
         except Exception as ex:
+            print('exception in processor run chain invoke')
+            traceback.print_exc()
             self._write_error(ex, query, query_id)
             self.num_failures += 1
             return None
