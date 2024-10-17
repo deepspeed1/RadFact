@@ -59,6 +59,7 @@ def get_from_env_or_vault(
     if not secret_name:
         raise ValueError("Secret name must be provided if the environment variable is not set.")
     value = get_from_vault(secret_name, workspace_config_path)
+    print(f'get_from_env_or_vault: {value = }')
     return value
 
 
