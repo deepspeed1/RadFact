@@ -206,14 +206,14 @@ class RadFactMetric:
         texts_as_str_df = pd.DataFrame(
             {id_col: study_id, FINDINGS_SECTION: texts_as_str[study_id]} for study_id in texts_as_str.keys()
         )
-        print(f"function: convert_narrative_text_to_phrases\n {texts_as_str_df.head(3)}")
+        print(f"function: convert_narrative_text_to_phrases\n {texts_as_str_df.head(3) = }")
         engine = get_report_to_phrases_engine(self.llm_phrase_cfg, texts_as_str_df)
         parsed_reports: list[ParsedReport] = engine.run()
-        print(f"function: convert_narrative_text_to_phrases\n {parsed_reports}")
+        print(f"function: convert_narrative_text_to_phrases\n {parsed_reports = }")
         processed_texts = {
             parsed.id: parsed.to_grounded_phrases_list() for parsed in parsed_reports if parsed.id is not None
         }
-        print(f"function: convert_narrative_text_to_phrases\n {processed_texts}")
+        print(f"function: convert_narrative_text_to_phrases\n {processed_texts = }")
         if engine.aggregated_processor_stats is not None:
             self.meta_metrics.update(
                 {f"{metric_prefix}/{k}": float(v) for k, v in engine.aggregated_processor_stats.items()}
