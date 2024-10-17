@@ -216,6 +216,7 @@ class StructuredProcessor(BaseProcessor[QueryT, ResultT]):
             if self.validate_result_fn:
                 self.validate_result_fn(query, response)
             self.num_success += 1
+            print(f'Structured Processor run: {response = }')
             return response
         except Exception as ex:
             self._write_error(ex, query, query_id)
