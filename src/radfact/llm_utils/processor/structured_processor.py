@@ -224,6 +224,7 @@ class StructuredProcessor(BaseProcessor[QueryT, ResultT]):
         except Exception as ex:
             print('exception in processor run chain invoke')
             traceback.print_exc()
+            exit()
             self._write_error(ex, query, query_id)
             self.num_failures += 1
             return None
